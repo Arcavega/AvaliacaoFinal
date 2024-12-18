@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+<header class="masthead">
+        <div class="container">
+            <div class="masthead-subheading">Meus Pedidos</div>
+        </div>
+</header>
+<section class="page-section" id="pedidos">
+    <div class="container">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Solicitações</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-md">
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Serviço</th>
+                                <th>Detalhe</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                            {% for form in form %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ form.nome }}</td>
+                                <td>{{ form.servico }}</td>
+                                <td>{{ form.detalhes }}</td>
+                                <td>{{ form.data }}</td>
+                                <th>
+                                    {% if form.aceita is None %}
+                                        <p class="text-center text-primary">Pendente</p>
+                                        <td class="center-block text-center">
+                                            <a href="{% url 'sasa:editar' form.id %}" class="btn btn-primary">Editar</a>
+                                            <a href="{% url 'sasa:deletar' form.id %}" class="btn btn-danger">Remover</a>
+                                        </td>
+                                    {% elif form.aceita %}
+                                        <p class="text-center text-success">Deferida</p>
+                                        <td class="center-block text-center"></td>
+                                    {% else %}
+                                        <p class="text-center text-danger">Negada</p>
+                                        <td class="center-block text-center"></td>
+                                    {% endif %}
+                                </th>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination justify-content-center mt-4">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if form.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">&laquo; Primeira</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ form.previous_page_number }}">Anterior</a>
+                                    </li>
+                                {% endif %}
+
+                                <li class="page-item active">
+                                    <span class="page-link">
+                                        Página {{ form.number }} de {{ form.paginator.num_pages }}
+                                    </span>
+                                </li>
+
+                                {% if form.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ form.next_page_number }}">Próxima</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ form.paginator.num_pages }}">Última &raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

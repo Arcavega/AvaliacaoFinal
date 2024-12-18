@@ -1,0 +1,17 @@
+{% extends "base/nobase.html" %}
+{% block content %}
+<section id="contact">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="section-heading text-uppercase text-primary">Agendar Serviço</h1>
+            <h3 class="section-subheading text-muted">Confira seus dados antes de agendar!</h3>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Agendar</button>
+            <a class="btn btn-primary" href="{% url 'sasa:index' %}">Voltar</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

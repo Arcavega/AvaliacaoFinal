@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<header class="masthead">
+    <div class="container">
+        <div class="masthead-subheading">Bem vindo, administrador!</div>
+    </div>
+</header>
+<body>
+    <div class="row">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Pesquisa</h4>
+                </div>
+                <form method="get" class="row g-3 justify-content-center">
+                    <div class="col-md-3">
+                        <label for="id_nome" class="form-label">Nome</label>
+                        {{ filter.form.nome }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_servico" class="form-label">Serviço</label>
+                        {{ filter.form.servico }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_data" class="form-label">Data</label>
+                        {{ filter.form.data}}
+                    </div>
+                    <div class="justify-content-center col-md-4 d-flex ">
+                        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                    </div>
+                </form>
+                <hr>
+                <h2 class="text-center">Resultados</h2>
+                <div class="card-header">
+                    <h4 class="text-center text-primary">Solicitações Pendentes</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-md">
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Número</th>
+                                <th>Serviço</th>
+                                <th>Detalhe</th>
+                                <th>Data Pedida</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                            {% for form in pendentes %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ form.nome }}</td>
+                                <td>{{ form.email }}</td>
+                                <td>{{ form.numero }}</td>
+                                <td>{{ form.servico }}</td>
+                                <td>{{ form.detalhes }}</td>
+                                <td>{{ form.data }}</td>
+                                <td>Pendente</td>
+                                <td class="center-block text-center">
+                                    <a href="{% url 'sasa:aceitar' form.id %}" class="btn btn-success">Aceitar</a>
+                                    <a href="{% url 'sasa:recusar' form.id %}" class="btn btn-danger">Recusar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h4 class="text-center text-success">Solicitações Aceitas</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-md">
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Número</th>
+                                <th>Serviço</th>
+                                <th>Detalhe</th>
+                                <th>Data Pedida</th>
+                                <th>Status</th>
+                            </tr>
+                            {% for form in aceitas %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ form.nome }}</td>
+                                <td>{{ form.email }}</td>
+                                <td>{{ form.numero }}</td>
+                                <td>{{ form.servico }}</td>
+                                <td>{{ form.detalhes }}</td>
+                                <td>{{ form.data }}</td>
+                                <td>Aceita</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+              <div class="card-header">
+                <h4 class="text-center text-danger">Solicitações Recusadas</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-md">
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Número</th>
+                            <th>Serviço</th>
+                            <th>Detalhe</th>
+                            <th>Data Pedida</th>
+                            <th>Status</th>
+                        </tr>
+                        {% for form in recusadas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ form.nome }}</td>
+                            <td>{{ form.email }}</td>
+                            <td>{{ form.numero }}</td>
+                            <td>{{ form.servico }}</td>
+                            <td>{{ form.detalhes }}</td>
+                            <td>{{ form.data }}</td>
+                            <td>Recusada</td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>          
+</body>
+{% endblock %}
