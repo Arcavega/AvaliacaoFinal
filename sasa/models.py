@@ -11,6 +11,12 @@ class Servicos (models.Model):
     def __str__(self):
         return self.nome
 
+class UserBlog(AbstractUser):
+    cpf = models.CharField(max_length=11, unique=True)
+
+    def __str__(self):
+        return f"{self.username} - {self.cpf}"
+
 class FormServicos (models.Model):
     nome = models.CharField(max_length=100)
     email = models.EmailField()
@@ -19,16 +25,12 @@ class FormServicos (models.Model):
     detalhes = models.TextField()
     data = models.DateField()
     aceita = models.BooleanField(default=None, null=True)
+    usuario = models.ForeignKey(UserBlog, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         status = "Aceita" if self.aceita else "Negada" if self.aceita is False else "Pendente"
         return f"{self.nome} e {status}"
     
-class UserBlog(AbstractUser):
-    cpf = models.CharField(max_length=11, unique=True)
-
-    def __str__(self):
-        return f"{self.username} - {self.cpf}"
 
 class Carro(models.Model):
     nome = models.CharField(max_length=100)

@@ -44,24 +44,29 @@ class FormServicosListView(FilterView):
     filtersetclass = FormServicosFilter
 
 def pedidos(request): #READ
-    form_list = FormServicos.objects.all()
+    usuario = request.user
+    form_list = FormServicos.objects.filter(usuario=usuario)
     paginator = Paginator(form_list, 3) 
     
     page_number = request.GET.get('page')
     form = paginator.get_page(page_number)
     
-    return render(request, 'pedidos.html', context={'form': form})
+    return render(request, 'pedidos.html', context={'form': form, 'usuario': usuario})
 
 def cadastrar(request): #CREATE
+    usuario = request.user
     if request.method == 'POST':
         form = formulario(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            x = form.save(commit=False)
+            x.usuario = usuario
+            x.save()
             return redirect('sasa:pedidos')
     else:
-        form = formulario()
+        form = formulario(initial={'usuario': usuario})
     context = {
-        'form': form
+        'form': form,
+        'usuario': usuario
     }
     return render(request, 'contato.html', context)
 
@@ -80,7 +85,7 @@ def administrador(request):
     aceitas = filtered_queryset.filter(aceita=True)    
     recusadas = filtered_queryset.filter(aceita=False)
 
-    return render(request, 'administrador.html', context={'filter': filter, 'pendentes': pendentes, 'aceitas': aceitas, 'recusadas': recusadas})
+    return render(request, 'administrador.html', context={'filter': filter, 'pendentes': pendentes, 'aceitas': aceitas, 'recusadas': recusadas, 'usuario': request.user})
 
 @login_required # esse login é para entrar no site
 def inicio(request):
@@ -91,7 +96,7 @@ def inicio(request):
         if nome:
             carros = Carro.objects.filter(nome__icontains=nome)
             
-    return render(request, 'index.html', {'carros': carros, 'form': form})
+    return render(request, 'index.html', {'carros': carros, 'form': form, 'usuario': request.user})
 
 def editar(request, id): #UPDATE
     formularios = FormServicos.objects.get(id=id)
@@ -104,7 +109,7 @@ def editar(request, id): #UPDATE
     else:
         form = formulario(instance=formularios)
     
-    return render(request, 'contato.html', context={'form': form})
+    return render(request, 'contato.html', context={'form': form, 'usuario': request.user})
 
 def deletar(request, id): #DELETE
     form = FormServicos.objects.get(id=id)

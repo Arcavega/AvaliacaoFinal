@@ -7,7 +7,7 @@ class formulario(forms.ModelForm):
 
     class Meta:
         model = FormServicos
-        fields = ['nome', 'numero', 'servico', 'email', 'data', 'detalhes']
+        fields = ['nome', 'numero', 'servico', 'email', 'data', 'detalhes', 'usuario']
 
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
@@ -16,6 +16,7 @@ class formulario(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'detalhes': forms.Textarea(attrs={'class': 'form-control'}),
             'data': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'DD/MM/AAAA'}),
+            'usuario': forms.Select(attrs={'class': 'form-control', 'style': 'display:none'})
         }
 
 class UserBlogCreationForm(UserCreationForm):
